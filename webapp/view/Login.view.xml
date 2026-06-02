@@ -1,0 +1,36 @@
+<mvc:View
+    controllerName="myapp.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+    <Page title="{i18n>loginTitle}" class="sapUiContentPadding loginPage" enableScrolling="false">
+        <headerContent>
+            <SegmentedButton id="loginLangToggle" selectedKey="{view>/currentLang}" selectionChange="onLanguageToggle">
+                <items>
+                    <SegmentedButtonItem key="ZH" text="中" />
+                    <SegmentedButtonItem key="EN" text="EN" />
+                </items>
+            </SegmentedButton>
+        </headerContent>
+        <content>
+            <VBox class="loginViewport" justifyContent="Center" alignItems="Center" fitContainer="true" height="100%">
+                <VBox class="loginForm" justifyContent="Center" alignItems="Center">
+                    <Title text="{i18n>platformSccTitle}" level="H2" class="sapUiSmallMarginBottom" />
+                    
+                    <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                        <f:content>
+                            <Label text="{i18n>username}" />
+                            <Input id="usernameInput" value="{/username}" />
+                            <Label text="{i18n>password}" />
+                            <Input id="passwordInput" type="Password" value="{/password}" />
+                        </f:content>
+                    </f:SimpleForm>
+                    <HBox justifyContent="SpaceAround" class="sapUiSmallMarginTop loginActionRow">
+                        <Button text="{i18n>loginButton}" press="onLogin" type="Emphasized" />
+                        <Button text="{i18n>registerButton}" press="onRegister" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

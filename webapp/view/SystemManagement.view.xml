@@ -1,0 +1,146 @@
+<mvc:View
+    controllerName="myapp.controller.SystemManagement"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Page title="{i18n>systemManagementTitle}" icon="sap-icon://sys-enter-2" showNavButton="true" navButtonPress="onNavBack">
+        <ScrollContainer vertical="true" horizontal="false" class="sapUiContentPadding">
+            <VBox>
+                <!-- Title -->
+                <Title text="{i18n>systemManagementTitle}" level="H1" class="sapUiLargeMargin" />
+
+                <!-- System Status Summary -->
+                <Panel headerText="{i18n>systemStatus}" class="sapUiLargeMargin">
+                    <layout:Grid hSpacing="1" vSpacing="1" defaultSpan="L3 M6 S12">
+                        <VBox class="statusCard">
+                            <Label text="{i18n>onlineUsers}" class="cardLabel" />
+                            <Text text="{system>/onlineUsers}" class="statusNumber" />
+                        </VBox>
+                        <VBox class="statusCard">
+                            <Label text="{i18n>systemUptime}" class="cardLabel" />
+                            <Text text="{system>/systemUptime}" class="statusNumber" />
+                        </VBox>
+                        <VBox class="statusCard">
+                            <Label text="{i18n>cpuUsage}" class="cardLabel" />
+                            <Text text="{system>/cpuUsage}" class="statusNumber" />
+                        </VBox>
+                        <VBox class="statusCard">
+                            <Label text="{i18n>memoryUsage}" class="cardLabel" />
+                            <Text text="{system>/memoryUsage}" class="statusNumber" />
+                        </VBox>
+                    </layout:Grid>
+                </Panel>
+
+                <!-- Login Information -->
+                <Panel headerText="{i18n>loginInformation}" class="sapUiLargeMargin">
+                    <Table items="{system>/loginHistory}" mode="SingleSelectMaster">
+                        <columns>
+                            <Column width="150px">
+                                <Text text="{i18n>username}" />
+                            </Column>
+                            <Column width="200px">
+                                <Text text="{i18n>loginTime}" />
+                            </Column>
+                            <Column width="150px">
+                                <Text text="{i18n>userIp}" />
+                            </Column>
+                            <Column width="150px">
+                                <Text text="{i18n>loginStatus}" />
+                            </Column>
+                            <Column width="100px">
+                                <Text text="{i18n>duration}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{system>username}" />
+                                    <Text text="{system>loginTime}" />
+                                    <Text text="{system>ipAddress}" />
+                                    <ObjectStatus 
+                                        text="{ path: 'system>status', formatter: '.formatLoginStatusText' }"
+                                        state="{system>statusState}" />
+                                    <Text text="{system>duration}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+                <!-- Online Users -->
+                <Panel headerText="{i18n>onlineUsersList}" class="sapUiLargeMargin">
+                    <Table items="{system>/onlineUsersList}" mode="SingleSelectMaster">
+                        <columns>
+                            <Column width="150px">
+                                <Text text="{i18n>username}" />
+                            </Column>
+                            <Column width="150px">
+                                <Text text="{i18n>loginTime}" />
+                            </Column>
+                            <Column width="150px">
+                                <Text text="{i18n>userIp}" />
+                            </Column>
+                            <Column width="150px">
+                                <Text text="{i18n>lastActivity}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{system>username}" />
+                                    <Text text="{system>loginTime}" />
+                                    <Text text="{system>ipAddress}" />
+                                    <Text text="{system>lastActivity}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+                <!-- System Logs -->
+                <Panel headerText="{i18n>systemLogs}" class="sapUiLargeMargin sapUiMediumMarginEnd">
+                    <HBox class="sapUiMediumMarginBottom">
+                        <ComboBox 
+                            items="{system>/logLevels}"
+                            width="200px"
+                            selectionChange="onLogLevelChange">
+                            <core:Item key="{system>id}" text="{system>name}" />
+                        </ComboBox>
+                        <Button 
+                            text="{i18n>exportLogs}" 
+                            icon="sap-icon://download" />
+                    </HBox>
+                    <Table items="{system>/systemLogs}" mode="SingleSelectMaster">
+                        <columns>
+                            <Column width="120px">
+                                <Text text="{i18n>logTime}" />
+                            </Column>
+                            <Column width="100px">
+                                <Text text="{i18n>logLevel}" />
+                            </Column>
+                            <Column width="150px">
+                                <Text text="{i18n>module}" />
+                            </Column>
+                            <Column width="300px">
+                                <Text text="{i18n>logMessage}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{system>timestamp}" />
+                                    <ObjectStatus 
+                                        text="{system>level}"
+                                        state="{system>levelState}" />
+                                    <Text text="{system>module}" />
+                                    <Text text="{system>message}" wrapping="true" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+            </VBox>
+        </ScrollContainer>
+    </Page>
+</mvc:View>

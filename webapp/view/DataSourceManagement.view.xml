@@ -1,0 +1,83 @@
+<mvc:View
+    controllerName="myapp.controller.DataSourceManagement"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page id="dsPage" title="{i18n>menuDataSourceManagement}" showNavButton="true" navButtonPress="onNavBack">
+        <headerContent>
+            <Button text="{i18n>dsNewDataSource}" type="Emphasized" press="onAddDataSource" icon="sap-icon://add" />
+        </headerContent>
+        <content>
+            <IconTabBar id="dsTabBar" selectedKey="datasources" select="onTabSelect" class="sapUiNoContentPadding">
+                <items>
+                    <IconTabFilter key="datasources" text="{i18n>dsTabDataSources}" icon="sap-icon://database-share">
+                        <content>
+                            <Table id="dsTable" items="{ds>/list}" noDataText="{i18n>dsNoDataSources}" class="sapUiSmallMargin">
+                                <columns>
+                                    <Column><Text text="{i18n>dsColumnName}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnType}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnHost}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnDatabase}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnStatus}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnActions}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{ds>name}"/>
+                                            <ObjectStatus text="{ds>type}" state="Information"/>
+                                            <Text text="{= ${ds>host} + ':' + ${ds>port}}"/>
+                                            <Text text="{ds>database}"/>
+                                            <ObjectStatus text="{path: 'ds>status', formatter: '.formatDsStatusText'}" state="{path: 'ds>status', formatter: '.formatDsStatusState'}"/>
+                                            <HBox>
+                                                <Button text="{i18n>dsButtonTest}" type="Ghost" press="onTestConnection" customData:context="{ds>}" />
+                                                <Button text="{i18n>editButton}" type="Ghost" press="onEditDataSource" customData:context="{ds>}" class="sapUiTinyMarginBegin"/>
+                                                <Button text="{i18n>deleteButton}" type="Reject" press="onDeleteDataSource" customData:context="{ds>}" class="sapUiTinyMarginBegin"/>
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter key="queries" text="{i18n>dsTabQueryTemplates}" icon="sap-icon://search">
+                        <content>
+                            <Toolbar class="sapUiSmallMargin">
+                                <Select id="dsFilter" items="{ds>/list}" change="onFilterByDs">
+                                    <core:Item key="" text="{i18n>dsAllDataSources}"/>
+                                    <core:Item key="{ds>id}" text="{ds>name}"/>
+                                </Select>
+                                <ToolbarSpacer/>
+                                <Button text="{i18n>dsNewQueryTemplate}" type="Emphasized" press="onAddQueryTemplate" icon="sap-icon://add"/>
+                            </Toolbar>
+                            <Table id="qtTable" items="{ds>/queries}" noDataText="{i18n>dsNoQueryTemplates}" class="sapUiSmallMarginBeginEnd">
+                                <columns>
+                                    <Column><Text text="{i18n>dsColumnName}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnDataSource}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnDescription}"/></Column>
+                                    <Column><Text text="{i18n>dsColumnActions}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{ds>name}"/>
+                                            <Text text="{ds>dataSource/name}"/>
+                                            <Text text="{ds>description}"/>
+                                            <HBox>
+                                                <Button text="{i18n>dsButtonPreview}" type="Ghost" press="onPreviewQuery" customData:context="{ds>}"/>
+                                                <Button text="{i18n>editButton}" type="Ghost" press="onEditQueryTemplate" customData:context="{ds>}" class="sapUiTinyMarginBegin"/>
+                                                <Button text="{i18n>deleteButton}" type="Reject" press="onDeleteQueryTemplate" customData:context="{ds>}" class="sapUiTinyMarginBegin"/>
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </content>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

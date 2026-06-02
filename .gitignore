@@ -1,0 +1,4 @@
+node_modules
+dist
+.vscode
+used-i18n-keys.txt

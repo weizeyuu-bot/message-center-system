@@ -1,0 +1,23 @@
+{
+  "name": "ui5-message-center",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ui5 serve",
+    "start:lan": "ui5 serve --accept-remote-connections",
+    "build": "ui5 build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@openui5/sap.m": "^1.146.0",
+    "@openui5/sap.ui.core": "^1.146.0",
+    "@openui5/themelib_sap_fiori_3": "^1.146.0",
+    "@ui5/cli": "^4.0.49",
+    "ui5-middleware-simpleproxy": "^3.4.1"
+  }
+}

@@ -1,0 +1,25 @@
+<mvc:View
+    controllerName="myapp.controller.Profile"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+    <Page title="{i18n>profileTitle}" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <VBox class="detailForm">
+                <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                    <f:content>
+                        <Label text="{i18n>name}" />
+                        <Input value="{user>/currentUser/name}" />
+                        <Label text="{i18n>username}" />
+                        <Input value="{user>/currentUser/username}" editable="false" />
+                        <Label text="{i18n>email}" />
+                        <Input value="{user>/currentUser/email}" />
+                    </f:content>
+                </f:SimpleForm>
+                <HBox justifyContent="End" class="sapUiSmallMarginTop">
+                    <Button text="{i18n>saveButton}" press="onSave" type="Emphasized" />
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

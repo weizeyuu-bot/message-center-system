@@ -1,0 +1,52 @@
+<mvc:View
+    controllerName="myapp.controller.SchedulerManagement"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page id="schedPage" title="{i18n>menuSchedulerManagement}" showNavButton="true" navButtonPress="onNavBack">
+        <headerContent>
+            <Button text="{i18n>schNewTask}" type="Emphasized" press="onAddTask" icon="sap-icon://add"/>
+        </headerContent>
+        <content>
+            <Table id="taskTable" items="{sched>/tasks}" noDataText="{i18n>schNoTasks}" class="sapUiSmallMargin">
+                <columns>
+                    <Column><Text text="{i18n>schColumnTaskName}"/></Column>
+                    <Column><Text text="{i18n>schColumnCron}"/></Column>
+                    <Column><Text text="{i18n>schColumnQueryTemplate}"/></Column>
+                    <Column><Text text="{i18n>schColumnChannel}"/></Column>
+                    <Column><Text text="{i18n>schColumnLastRun}"/></Column>
+                    <Column><Text text="{i18n>schColumnStatus}"/></Column>
+                    <Column width="28rem"><Text text="{i18n>schColumnActions}"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{sched>name}"/>
+                            <Text text="{sched>cronExpr}"/>
+                            <Text text="{sched>queryTemplate/name}"/>
+                            <Text text="{sched>channel/name}"/>
+                            <Text text="{ path: 'sched>lastRunAt', formatter: '.formatDateTime' }"/>
+                            <ObjectStatus
+                                text="{path: 'sched>status', formatter: '.formatTaskStatusText'}"
+                                state="{path: 'sched>status', formatter: '.formatTaskStatusState'}"
+                                icon="{= ${sched>lastRunStatus} === 'FAILED' ? 'sap-icon://error' : ''}"/>
+                            <HBox wrap="Wrap" renderType="Bare">
+                                <Button text="{i18n>schButtonRunNow}" type="Ghost" press="onManualRun" customData:context="{sched>}"/>
+                                <Button
+                                    text="{path: 'sched>status', formatter: '.formatToggleText'}"
+                                    type="{= ${sched>status} === 'ACTIVE' ? 'Default' : 'Emphasized'}"
+                                    press="onToggleTask"
+                                    customData:context="{sched>}"
+                                    class="sapUiTinyMarginBegin"/>
+                                <Button text="{i18n>schButtonLogs}" type="Ghost" press="onViewLogs" customData:context="{sched>}" class="sapUiTinyMarginBegin"/>
+                                <Button text="{i18n>editButton}" type="Ghost" press="onEditTask" customData:context="{sched>}" class="sapUiTinyMarginBegin"/>
+                                <Button text="{i18n>deleteButton}" type="Reject" press="onDeleteTask" customData:context="{sched>}" class="sapUiTinyMarginBegin"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

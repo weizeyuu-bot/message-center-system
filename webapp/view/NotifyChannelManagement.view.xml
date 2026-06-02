@@ -1,0 +1,37 @@
+<mvc:View
+    controllerName="myapp.controller.NotifyChannelManagement"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page id="notifyPage" title="{i18n>menuNotifyChannelManagement}" showNavButton="true" navButtonPress="onNavBack">
+        <headerContent>
+            <Button text="{i18n>ncNewChannel}" type="Emphasized" press="onAddChannel" icon="sap-icon://add"/>
+        </headerContent>
+        <content>
+            <Table id="channelTable" items="{notify>/channels}" noDataText="{i18n>ncNoChannels}" class="sapUiSmallMargin">
+                <columns>
+                    <Column><Text text="{i18n>ncColumnName}"/></Column>
+                    <Column><Text text="{i18n>ncColumnType}"/></Column>
+                    <Column><Text text="{i18n>ncColumnDescription}"/></Column>
+                    <Column><Text text="{i18n>ncColumnStatus}"/></Column>
+                    <Column><Text text="{i18n>ncColumnActions}"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{notify>name}"/>
+                            <ObjectStatus text="{notify>type}" state="{= ${notify>type} === 'EMAIL' ? 'Information' : ${notify>type} === 'DINGTALK' ? 'Success' : 'Warning'}"/>
+                            <Text text="{notify>description}"/>
+                            <ObjectStatus text="{path: 'notify>status', formatter: '.formatChannelStatusText'}" state="{path: 'notify>status', formatter: '.formatChannelStatusState'}"/>
+                            <HBox>
+                                <Button text="{i18n>ncButtonTestSend}" type="Ghost" press="onTestChannel" customData:context="{notify>}"/>
+                                <Button text="{i18n>editButton}" type="Ghost" press="onEditChannel" customData:context="{notify>}" class="sapUiTinyMarginBegin"/>
+                                <Button text="{i18n>deleteButton}" type="Reject" press="onDeleteChannel" customData:context="{notify>}" class="sapUiTinyMarginBegin"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

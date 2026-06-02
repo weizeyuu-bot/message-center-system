@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>消息中心</title>
+    <script>
+        (function () {
+            var url = new URL(window.location.href);
+            var urlParams = url.searchParams;
+            var urlLang = (urlParams.get("lang") || urlParams.get("sap-language") || "").toUpperCase();
+            var savedLang = (localStorage.getItem("app-language") || "").toUpperCase();
+            var resolvedLang = (urlLang || savedLang || "ZH").startsWith("EN") ? "en" : "zh";
+
+            localStorage.setItem("app-language", resolvedLang.toUpperCase());
+            window["sap-ui-config"] = window["sap-ui-config"] || {};
+            window["sap-ui-config"].language = resolvedLang;
+
+            if (urlParams.has("sap-language") || urlParams.has("lang")) {
+                urlParams.delete("sap-language");
+                urlParams.delete("lang");
+                window.history.replaceState({}, "", url.pathname + (url.searchParams.toString() ? ("?" + url.searchParams.toString()) : "") + url.hash);
+            }
+        })();
+    </script>
+    <script
+        id="sap-ui-bootstrap"
+        src="resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_fiori_3"
+        data-sap-ui-resourceroots='{
+            "myapp": "./"
+        }'
+        data-sap-ui-oninit="module:myapp/index"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true">
+    </script>
+</head>
+<body class="sapUiBody" id="content"></body>
+</html>

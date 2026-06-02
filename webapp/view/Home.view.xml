@@ -1,0 +1,175 @@
+<mvc:View
+    controllerName="myapp.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Page title="{i18n>homeTitle}" showNavButton="false" class="homePage">
+        <headerContent>
+            <SegmentedButton id="langToggle" selectedKey="{view>/currentLang}" selectionChange="onLanguageToggle">
+                <items>
+                    <SegmentedButtonItem key="ZH" text="中" />
+                    <SegmentedButtonItem key="EN" text="EN" />
+                </items>
+            </SegmentedButton>
+            <Button text="{i18n>logoutButton}" type="Reject" press="onLogout" class="sapUiSmallMarginBegin" />
+        </headerContent>
+        <HBox class="homeMainContainer">
+            <VBox class="homeMenuPanel" width="240px">
+                <List selectionMode="None" class="navigationList">
+                    <GroupHeaderListItem title="{i18n>menuGroupGovernance}" upperCase="false" visible="{view>/menuVisibility/governanceGroup}" />
+                    <StandardListItem title="{i18n>menuProfile}" icon="sap-icon://employee" type="Navigation" press="onNavigateToProfile" visible="{view>/menuVisibility/profile}" selected="{= ${view>/activeMenuKey} === 'profile' }" />
+                    <StandardListItem title="{i18n>menuUserManagement}" icon="sap-icon://group" type="Navigation" press="onNavigateToUserManagement" visible="{view>/menuVisibility/users}" selected="{= ${view>/activeMenuKey} === 'users' }" />
+                    <StandardListItem title="{i18n>menuRoleManagement}" icon="sap-icon://personnel-view" type="Navigation" press="onNavigateToRoleManagement" visible="{view>/menuVisibility/roles}" selected="{= ${view>/activeMenuKey} === 'roles' }" />
+                    <StandardListItem title="{i18n>menuPermissionManagement}" icon="sap-icon://key" type="Navigation" press="onNavigateToPermissionManagement" visible="{view>/menuVisibility/permissionManagement}" selected="{= ${view>/activeMenuKey} === 'permissionManagement' }" />
+                    <StandardListItem title="{i18n>menuSystemManagement}" icon="sap-icon://settings" type="Navigation" press="onNavigateToSystemManagement" visible="{view>/menuVisibility/system}" selected="{= ${view>/activeMenuKey} === 'system' }" />
+
+                    <GroupHeaderListItem title="{i18n>menuMessageCenter}" upperCase="false" visible="{view>/menuVisibility/messageCenterGroup}" />
+                    <StandardListItem title="{i18n>menuDataSourceManagement}" icon="sap-icon://database" type="Navigation" press="onNavigateToDataSourceManagement" visible="{view>/menuVisibility/dataSourceManagement}" selected="{= ${view>/activeMenuKey} === 'dataSourceManagement' }" />
+                    <StandardListItem title="{i18n>menuSchedulerManagement}" icon="sap-icon://appointment-2" type="Navigation" press="onNavigateToSchedulerManagement" visible="{view>/menuVisibility/schedulerManagement}" selected="{= ${view>/activeMenuKey} === 'schedulerManagement' }" />
+                    <StandardListItem title="{i18n>menuNotifyChannelManagement}" icon="sap-icon://bell" type="Navigation" press="onNavigateToNotifyChannelManagement" visible="{view>/menuVisibility/notifyChannelManagement}" selected="{= ${view>/activeMenuKey} === 'notifyChannelManagement' }" />
+                </List>
+            </VBox>
+
+            <VBox class="homeContentArea" fitContainer="true">
+                <VBox class="homeHeroPanel sapUiLargeMargin sapUiMediumMarginBegin sapUiMediumMarginEnd">
+                    <Title text="{dashboard>/welcomeTitle}" level="H1" />
+                    <Text text="{dashboard>/welcomeSubtitle}" class="dashboardHeroText sapUiSmallMarginTop" />
+                    <HBox class="dashboardHeroMeta sapUiSmallMarginTop">
+                        <ObjectStatus text="{dashboard>/todayText}" state="Information" />
+                        <ObjectStatus text="{dashboard>/focusText}" state="Success" class="sapUiSmallMarginBegin" />
+                    </HBox>
+                </VBox>
+
+                <Panel headerText="{i18n>dashboardOverviewSection}" class="sapUiLargeMargin sapUiMediumMarginBegin sapUiMediumMarginEnd dashboardPanel">
+                    <HBox class="dashboardCardRow" wrap="Wrap" items="{dashboard>/summaryCards}">
+                        <VBox class="dashboardInsightCard">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                <VBox>
+                                    <Text text="{dashboard>title}" class="dashboardCardLabel" />
+                                    <Title text="{dashboard>value}" level="H3" class="dashboardCardValue" />
+                                </VBox>
+                                <core:Icon src="{dashboard>icon}" size="1.6rem" class="dashboardCardIcon" />
+                            </HBox>
+                            <Text text="{dashboard>description}" class="dashboardCardDescription sapUiSmallMarginTop" />
+                            <Link text="{i18n>viewButton}" press="onDashboardRoutePress" class="sapUiSmallMarginTop" />
+                        </VBox>
+                    </HBox>
+                </Panel>
+
+                <Panel headerText="{i18n>dashboardTodoSection}" class="sapUiLargeMargin sapUiMediumMarginBegin sapUiMediumMarginEnd dashboardPanel">
+                    <HBox class="dashboardCardRow" wrap="Wrap" items="{dashboard>/todoCards}">
+                        <VBox class="dashboardTodoCard">
+                            <Text text="{dashboard>title}" class="dashboardCardLabel" />
+                            <Title text="{dashboard>value}" level="H3" class="dashboardCardValue" />
+                            <Text text="{dashboard>subtitle}" class="dashboardCardDescription" />
+                            <ObjectStatus text="{dashboard>statusText}" state="{dashboard>statusState}" class="sapUiSmallMarginTop" />
+                            <Link text="{i18n>dashboardHandleNow}" press="onDashboardRoutePress" class="sapUiSmallMarginTop" />
+                        </VBox>
+                    </HBox>
+                </Panel>
+
+                <HBox class="dashboardTwoColumnRow sapUiLargeMargin sapUiMediumMarginBegin sapUiMediumMarginEnd" wrap="Wrap">
+                    <VBox class="dashboardColumnLeft">
+                        <Panel headerText="{i18n>dashboardAlertSection}" class="dashboardPanel dashboardSubPanel">
+                            <List items="{dashboard>/alerts}" noDataText="{i18n>dashboardNoAlerts}">
+                                <StandardListItem title="{dashboard>title}" description="{dashboard>description}" info="{dashboard>info}" infoState="{dashboard>state}" icon="{dashboard>icon}" type="Navigation" press="onAlertPress" />
+                            </List>
+                        </Panel>
+
+                        <Panel headerText="{i18n>recentActivities}" class="dashboardPanel dashboardSubPanel sapUiMediumMarginTop">
+                            <List items="{dashboard>/activities}">
+                                <StandardListItem title="{dashboard>title}" description="{dashboard>description}" icon="{dashboard>icon}" type="Navigation" press="onDashboardRoutePress" />
+                            </List>
+                        </Panel>
+                    </VBox>
+
+                    <VBox class="dashboardColumnRight">
+                        <Panel headerText="{i18n>dashboardQuickEntrySection}" class="dashboardPanel dashboardSubPanel">
+                            <List items="{dashboard>/quickActions}">
+                                <StandardListItem title="{dashboard>title}" description="{dashboard>description}" icon="{dashboard>icon}" type="Navigation" press="onDashboardRoutePress" />
+                            </List>
+                        </Panel>
+
+                        <Panel headerText="{i18n>mcTaskBoardSection}" class="dashboardPanel dashboardSubPanel sapUiMediumMarginTop">
+                            <Table items="{dashboard>/topSuppliers}">
+                                <columns>
+                                    <Column><Text text="{i18n>mcTaskName}" /></Column>
+                                    <Column><Text text="{i18n>mcTaskCron}" /></Column>
+                                    <Column><Text text="{i18n>mcTaskLastRun}" /></Column>
+                                    <Column><Text text="{i18n>status}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{dashboard>name}" />
+                                            <Text text="{dashboard>contacts}" />
+                                            <Text text="{dashboard>value}" />
+                                            <ObjectStatus text="{dashboard>status}" state="{dashboard>state}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </Panel>
+                    </VBox>
+                </HBox>
+
+                <Panel headerText="{i18n>dashboardExecutionSection}" class="sapUiLargeMargin sapUiMediumMarginBegin sapUiMediumMarginEnd dashboardPanel">
+                    <HBox class="dashboardBarChartRow" wrap="Wrap">
+                        <VBox class="dashboardBarChartBlock">
+                            <Title text="{i18n>dashboardChartPOTitle}" level="H5" class="dashboardBarChartTitle" />
+                            <List items="{dashboard>/statusOverview}" showSeparators="None" class="dashboardBarList">
+                                <CustomListItem>
+                                    <VBox class="dashboardBarItem">
+                                        <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                            <Label text="{dashboard>label}" class="dashboardBarLabel" />
+                                            <VBox alignItems="End">
+                                                <Text text="{dashboard>count}" class="dashboardBarCount" />
+                                                <Text text="{dashboard>percentageText}" class="dashboardBarPercent" />
+                                            </VBox>
+                                        </HBox>
+                                        <ProgressIndicator percentValue="{dashboard>percentage}" displayValue="{dashboard>percentageText}" state="{dashboard>state}" showValue="true" class="dashboardBarProgress sapUiSmallMarginTop" />
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
+                        <VBox class="dashboardBarChartBlock">
+                            <Title text="{i18n>dashboardChartDeliveryTitle}" level="H5" class="dashboardBarChartTitle" />
+                            <List items="{dashboard>/deliveryStatus}" showSeparators="None" class="dashboardBarList">
+                                <CustomListItem>
+                                    <VBox class="dashboardBarItem">
+                                        <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                            <Label text="{dashboard>label}" class="dashboardBarLabel" />
+                                            <VBox alignItems="End">
+                                                <Text text="{dashboard>count}" class="dashboardBarCount" />
+                                                <Text text="{dashboard>percentageText}" class="dashboardBarPercent" />
+                                            </VBox>
+                                        </HBox>
+                                        <ProgressIndicator percentValue="{dashboard>percentage}" displayValue="{dashboard>percentageText}" state="{dashboard>state}" showValue="true" class="dashboardBarProgress sapUiSmallMarginTop" />
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
+                        <VBox class="dashboardBarChartBlock">
+                            <Title text="{i18n>dashboardChartInvoiceTitle}" level="H5" class="dashboardBarChartTitle" />
+                            <List items="{dashboard>/invoiceStatus}" showSeparators="None" class="dashboardBarList">
+                                <CustomListItem>
+                                    <VBox class="dashboardBarItem">
+                                        <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                            <Label text="{dashboard>label}" class="dashboardBarLabel" />
+                                            <VBox alignItems="End">
+                                                <Text text="{dashboard>count}" class="dashboardBarCount" />
+                                                <Text text="{dashboard>percentageText}" class="dashboardBarPercent" />
+                                            </VBox>
+                                        </HBox>
+                                        <ProgressIndicator percentValue="{dashboard>percentage}" displayValue="{dashboard>percentageText}" state="{dashboard>state}" showValue="true" class="dashboardBarProgress sapUiSmallMarginTop" />
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
+                    </HBox>
+                </Panel>
+            </VBox>
+        </HBox>
+    </Page>
+</mvc:View>

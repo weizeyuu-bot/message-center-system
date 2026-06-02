@@ -1,0 +1,185 @@
+<mvc:View
+    controllerName="myapp.controller.UserManagement"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Page title="{vm>/pageTitle}" showNavButton="true" navButtonPress="onNavBack">
+        <VBox class="sapUiContentPadding sapUiLargeMargin">
+            <Title text="{vm>/pageTitle}" level="H1" class="sapUiMediumMarginBottom" />
+
+            <IconTabBar id="userMgmtTabBar" expandable="false" class="sapUiResponsiveContentPadding" select="onTabSelect">
+                <items>
+                    <IconTabFilter key="users" icon="sap-icon://group" text="{i18n>userTabTitle}">
+                        <VBox class="sapUiSmallMarginTop">
+                            <Toolbar>
+                                <SearchField
+                                    id="userSearchField"
+                                    placeholder="{i18n>searchUsers}"
+                                    width="300px"
+                                    search="onSearch"
+                                    liveChange="onSearch" />
+                                <ToolbarSpacer />
+                                <Button
+                                    text="{i18n>addButton}"
+                                    icon="sap-icon://add"
+                                    press="onAddUser"
+                                    type="Emphasized" />
+                            </Toolbar>
+
+                            <Table
+                                id="usersTable"
+                                items="{users>/registeredUsers}"
+                                mode="SingleSelectMaster"
+                                class="sapUiSmallMarginTop">
+                                <columns>
+                                    <Column width="140px"><Text text="{i18n>username}" /></Column>
+                                    <Column width="220px"><Text text="{i18n>userEmail}" /></Column>
+                                    <Column width="150px"><Text text="{i18n>department}" /></Column>
+                                    <Column width="150px"><Text text="{i18n>role}" /></Column>
+                                    <Column width="120px"><Text text="{i18n>accountStatus}" /></Column>
+                                    <Column width="120px"><Text text="{i18n>activityStatus}" /></Column>
+                                    <Column width="160px"><Text text="{i18n>actions}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{users>username}" />
+                                            <Text text="{users>email}" />
+                                            <Text text="{users>department}" />
+                                            <ObjectIdentifier title="{users>roleName}" />
+                                            <ObjectStatus
+                                                text="{ path: 'users>accountStatus', formatter: '.formatAccountStatusText' }"
+                                                state="{users>accountStatusState}" />
+                                            <ObjectStatus
+                                                text="{ path: 'users>activityStatus', formatter: '.formatActivityStatusText' }"
+                                                state="{users>activityStatusState}" />
+                                            <HBox>
+                                                <Button
+                                                    icon="sap-icon://detail-view"
+                                                    text="{i18n>viewButton}"
+                                                    type="Transparent"
+                                                    press="onOpenUserDetail" />
+                                                <Button
+                                                    icon="sap-icon://edit"
+                                                    type="Transparent"
+                                                    press="onEditUser" />
+                                                <Button
+                                                    icon="sap-icon://delete"
+                                                    type="Transparent"
+                                                    press="onDeleteUser" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+
+                            <Panel headerText="{i18n>userStatistics}" class="sapUiMediumMarginTop">
+                                <layout:Grid hSpacing="1" vSpacing="1" defaultSpan="L3 M6 S12">
+                                    <VBox class="statItem">
+                                        <Text text="{i18n>totalUsers}" class="statLabel" />
+                                        <Text text="{users>/statistics/totalUsers}" class="statNumber" />
+                                    </VBox>
+                                    <VBox class="statItem">
+                                        <Text text="{i18n>activeUsers}" class="statLabel" />
+                                        <Text text="{users>/statistics/activeUsers}" class="statNumber" />
+                                    </VBox>
+                                    <VBox class="statItem">
+                                        <Text text="{i18n>inactiveUsers}" class="statLabel" />
+                                        <Text text="{users>/statistics/inactiveUsers}" class="statNumber" />
+                                    </VBox>
+                                    <VBox class="statItem">
+                                        <Text text="{i18n>thisMonthNewUsers}" class="statLabel" />
+                                        <Text text="{users>/statistics/thisMonthNewUsers}" class="statNumber" />
+                                    </VBox>
+                                </layout:Grid>
+                            </Panel>
+                        </VBox>
+                    </IconTabFilter>
+
+                    <IconTabFilter key="roles" icon="sap-icon://personnel-view" text="{i18n>roleTabTitle}">
+                        <VBox class="sapUiSmallMarginTop">
+                            <Toolbar>
+                                <SearchField
+                                    id="roleSearchField"
+                                    placeholder="{i18n>searchRoles}"
+                                    width="300px"
+                                    search="onRoleSearch"
+                                    liveChange="onRoleSearch" />
+                                <ToolbarSpacer />
+                                <Button text="{i18n>addButton}" icon="sap-icon://add" press="onAddRole" type="Emphasized" />
+                                <Button text="{i18n>editButton}" icon="sap-icon://edit" press="onEditRole" class="sapUiTinyMarginBegin" />
+                                <Button text="{i18n>deleteButton}" icon="sap-icon://delete" press="onDeleteRole" class="sapUiTinyMarginBegin" />
+                            </Toolbar>
+
+                            <Table
+                                id="rolesTable"
+                                mode="SingleSelectMaster"
+                                selectionChange="onRoleSelectionChange"
+                                items="{users>/roles}"
+                                class="sapUiSmallMarginTop">
+                                <columns>
+                                    <Column width="170px"><Text text="{i18n>roleCode}" /></Column>
+                                    <Column width="200px"><Text text="{i18n>roleName}" /></Column>
+                                    <Column><Text text="{i18n>roleDescription}" /></Column>
+                                    <Column width="110px"><Text text="{i18n>roleUserCount}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{users>id}" />
+                                            <Text text="{users>name}" />
+                                            <Text text="{users>description}" />
+                                            <ObjectNumber number="{users>userCount}" unit="{i18n>personCountUnit}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+
+                    <IconTabFilter key="permissions" icon="sap-icon://key" text="{i18n>permissionTabTitle}">
+                        <VBox class="sapUiSmallMarginTop">
+                            <Toolbar>
+                                <Title text="{i18n>permissionConfigTitle}" level="H4" />
+                                <ToolbarSpacer />
+                                <Select selectedKey="{vm>/selectedRoleId}" change="onPermissionRoleChange" items="{users>/roles}" width="300px" forceSelection="false">
+                                    <items>
+                                        <core:Item key="{users>id}" text="{users>name}" />
+                                    </items>
+                                </Select>
+                                <Button text="{i18n>saveButton}" type="Emphasized" press="onSavePermissions" class="sapUiTinyMarginBegin" />
+                            </Toolbar>
+
+                            <MessageStrip
+                                text="{i18n>permissionDesignHint}"
+                                type="Information"
+                                showIcon="true"
+                                class="sapUiSmallMarginTop" />
+
+                            <Table items="{vm>/permissionRows}" class="sapUiSmallMarginTop"
+                                    noDataText="{i18n>roleSelectFirst}">
+                                <columns>
+                                    <Column width="160px"><Text text="{i18n>permissionGroup}" /></Column>
+                                    <Column><Text text="{i18n>permissionModule}" /></Column>
+                                    <Column hAlign="Center" width="120px"><Text text="{i18n>permissionQuery}" /></Column>
+                                    <Column hAlign="Center" width="120px"><Text text="{i18n>permissionOperate}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem visible="{= !!${vm>moduleName} }">
+                                        <cells>
+                                            <Text text="{vm>groupName}" />
+                                            <Text text="{vm>moduleName}" />
+                                            <Switch state="{vm>query}" change="onPermissionQueryChange" />
+                                            <Switch state="{vm>operate}" change="onPermissionOperateChange" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </VBox>
+    </Page>
+</mvc:View>

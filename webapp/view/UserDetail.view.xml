@@ -1,0 +1,133 @@
+<mvc:View
+    controllerName="myapp.controller.UserDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    <Page title="{i18n>userDetailTitle}" showNavButton="true" navButtonPress="onNavBack" class="poDetailPage">
+        <content>
+            <VBox class="poDetailLayout">
+                <HBox class="poDetailTopRow" wrap="Wrap" renderType="Bare">
+                    <Panel headerText="{i18n>basicInformation}" class="poDetailHeaderPanel poHeaderBandPanel">
+                        <form:Form editable="false" class="sapUiSmallMargin">
+                            <form:layout>
+                                <form:ResponsiveGridLayout columnsL="2" columnsM="2" labelSpanL="4" labelSpanM="4" emptySpanL="1" emptySpanM="1" />
+                            </form:layout>
+                            <form:formContainers>
+                                <form:FormContainer>
+                                    <form:formElements>
+                                        <form:FormElement label="{i18n>username}">
+                                            <form:fields>
+                                                <Text text="{users>username}" />
+                                            </form:fields>
+                                        </form:FormElement>
+                                        <form:FormElement label="{i18n>userEmail}">
+                                            <form:fields>
+                                                <Input value="{users>email}" editable="{ui>/editMode}" />
+                                            </form:fields>
+                                        </form:FormElement>
+                                        <form:FormElement label="{i18n>userPhone}">
+                                            <form:fields>
+                                                <Input value="{users>phone}" editable="{ui>/editMode}" />
+                                            </form:fields>
+                                        </form:FormElement>
+                                        <form:FormElement label="{i18n>department}">
+                                            <form:fields>
+                                                <Input value="{users>department}" editable="{ui>/editMode}" />
+                                            </form:fields>
+                                        </form:FormElement>
+                                    </form:formElements>
+                                </form:FormContainer>
+                                <form:FormContainer>
+                                    <form:formElements>
+                                        <form:FormElement label="{i18n>role}">
+                                            <form:fields>
+                                                <Text text="{users>roleName}" visible="{= !${ui>/editMode} }" />
+                                                <Select
+                                                    selectedKey="{users>roleId}"
+                                                    enabled="{ui>/editMode}"
+                                                    visible="{ui>/editMode}"
+                                                    forceSelection="false"
+                                                    width="100%"
+                                                    items="{users>/roles}"
+                                                    change="onRoleChange">
+                                                    <items>
+                                                        <core:Item key="{users>id}" text="{users>name}" />
+                                                    </items>
+                                                </Select>
+                                            </form:fields>
+                                        </form:FormElement>
+                                        <form:FormElement label="{i18n>status}">
+                                            <form:fields>
+                                                <Select selectedKey="{users>status}" enabled="{ui>/editMode}" change="onStatusChange" forceSelection="false" items="{statusOptions>/userStatus}">
+                                                    <items>
+                                                        <core:Item key="{statusOptions>key}" text="{statusOptions>text}" />
+                                                    </items>
+                                                </Select>
+                                            </form:fields>
+                                        </form:FormElement>
+                                        <form:FormElement label="{i18n>registrationDate}">
+                                            <form:fields>
+                                                <Text text="{users>registrationDate}" />
+                                            </form:fields>
+                                        </form:FormElement>
+                                        <form:FormElement label="{i18n>createdBy}">
+                                            <form:fields>
+                                                <Text text="{users>createdBy}" />
+                                            </form:fields>
+                                        </form:FormElement>
+                                    </form:formElements>
+                                </form:FormContainer>
+                            </form:formContainers>
+                        </form:Form>
+                    </Panel>
+
+                    <VBox class="poDetailSummaryColumn">
+                        <Panel class="poRightTabsPanel">
+                            <IconTabBar expandable="false" class="poRightTabs">
+                                <items>
+                                    <IconTabFilter key="status" icon="sap-icon://activity-items" text="{i18n>poDetailTabStatus}">
+                                        <VBox class="sapUiSmallMargin poStatusTabContent">
+                                            <ObjectStatus
+                                                text="{ path: 'users>status', formatter: '.formatUserStatusText' }"
+                                                state="{users>statusState}"
+                                                class="poSummaryStatus sapUiTinyMarginBottom" />
+                                            <Title text="{users>username}" level="H4" class="poSummaryTitle" />
+                                            <Text text="{= ${users>roleName} || '-' }" class="poSummarySubtext" />
+                                            <Text text="{= ${i18n>department} + ': ' + (${users>department} || '-') }" class="sapUiTinyMarginTop" />
+                                            <Text text="{= ${i18n>userEmail} + ': ' + (${users>email} || '-') }" />
+                                            <Text text="{= ${i18n>userPhone} + ': ' + (${users>phone} || '-') }" />
+                                        </VBox>
+                                    </IconTabFilter>
+                                    <IconTabFilter key="metrics" icon="sap-icon://horizontal-bar-chart" text="{i18n>poDetailTabMetrics}">
+                                        <HBox class="poMetricGrid sapUiSmallMargin" wrap="Wrap" renderType="Bare">
+                                            <VBox class="poMetricCard">
+                                                <Text text="{i18n>lastLogin}" class="poMetricLabel" />
+                                                <Text text="{= ${users>lastLogin} || '-' }" class="poCellText" />
+                                            </VBox>
+                                            <VBox class="poMetricCard">
+                                                <Text text="{i18n>loginCount}" class="poMetricLabel" />
+                                                <Title text="{= ${users>loginCount} || '0' }" level="H3" class="poMetricValue" />
+                                            </VBox>
+                                            <VBox class="poMetricCard poMetricCardWide">
+                                                <Text text="{i18n>registrationDate}" class="poMetricLabel" />
+                                                <Text text="{= ${users>registrationDate} || '-' }" class="poCellText" />
+                                            </VBox>
+                                        </HBox>
+                                    </IconTabFilter>
+                                </items>
+                            </IconTabBar>
+                        </Panel>
+                    </VBox>
+                </HBox>
+
+                <HBox justifyContent="End" class="poDetailActionBar" renderType="Bare">
+                    <Button text="{i18n>editButton}" icon="sap-icon://edit" type="Emphasized" press="onEditUser" visible="{= !${ui>/editMode} }" class="sapUiTinyMarginEnd" />
+                    <Button text="{i18n>saveButton}" icon="sap-icon://save" type="Emphasized" press="onSaveUser" visible="{ui>/editMode}" class="sapUiTinyMarginEnd" />
+                    <Button text="{i18n>cancelButton}" icon="sap-icon://decline" press="onCancelEdit" visible="{ui>/editMode}" class="sapUiTinyMarginEnd" />
+                    <Button text="{i18n>back}" icon="sap-icon://nav-back" press="onNavBack" />
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
