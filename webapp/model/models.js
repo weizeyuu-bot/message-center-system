@@ -91,6 +91,7 @@
                     { id: "info", name: "信息" },
                     { id: "debug", name: "调试" }
                 ],
+                allSystemLogs: [],
                 systemLogs: []
             };
             return new JSONModel(oData);
