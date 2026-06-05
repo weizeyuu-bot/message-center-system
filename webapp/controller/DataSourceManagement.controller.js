@@ -73,7 +73,7 @@ sap.ui.define([
         _openDsDialog: function (oDs) {
             var that = this;
             var bEdit = !!oDs;
-            var oData = oDs ? Object.assign({}, oDs) : { type: "POSTGRESQL", port: 5432 };
+            var oData = oDs ? Object.assign({}, oDs) : { type: "POSTGRESQL", port: 5434 };
             var oModel = new JSONModel(oData);
 
             var oTypeSelect = new Select("_dsTypeSelect", {
